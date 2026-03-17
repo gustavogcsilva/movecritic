@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Movecritic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dark-theme">
+
+<header class="main-header">
+    <h1 class="logo">Movecritic</h1>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="/contato">Contato</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <article class="about-section">
+        <header class="about-header">
+            <h2 class="section-title">O que é o Movecritic?</h2>
+            <p class="about-text">
+                O <strong>Movecritic</strong> nasceu da paixão por cinema e literatura. Nossa plataforma é um espaço dedicado 
+                para que entusiastas possam descobrir novas obras, ler sinopses detalhadas e, o mais importante: 
+                <strong>compartilhar e ler críticas reais</strong> da comunidade.
+            </p>
+        </header>
+
+        <section class="dedications-section">
+            <h2 class="section-title">Dedicatórias</h2>
+            <p class="about-text">
+                Eu dedico esse projeto para <span class="highlight-name">Gleica Campos</span>, maior incentivadora para que estudos e projetos aconteçam. 
+                Ao <span class="highlight-name">Professor Victor Brayner</span> que ajudou bastante com a mentoria e como professor. 
+                Pessoas como elas fazem com que o nosso sonho possa se tornar realidade.
+            </p>
+            <p class="study-note">Este projeto é desenvolvido apenas para fins de estudos.</p>
+        </section>
+        
+        <div class="grid-resultados about-grid">
+            <div class="card about-card">
+                <h3 class="title-cinema">🎬 Cinema</h3>
+                <p>Integração com as maiores bases de dados de filmes do mundo para trazer informações atualizadas.</p>
+            </div>
+            <div class="card about-card">
+                <h3 class="title-literature">📚 Literatura</h3>
+                <p>Busca inteligente de livros para que sua próxima leitura seja baseada em recomendações sólidas.</p>
+            </div>
+        </div>
+
+        <div class="about-action">
+            <a href="/" class="btn-primary">Começar a Explorar</a>
+        </div>
+    </article>
+</main>
+
+<footer class="main-footer">
+    <p>Projeto Movecritic - By Gustavo Geraldo © 2026</p>
+</footer>
+
+</body>
+</html>

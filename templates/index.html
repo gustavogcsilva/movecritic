@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movecritic - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dark-theme">
+
+<header class="main-header">
+    <div class="logo-container">
+        <a href="/">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Movecritic Logo" class="logo-img">
+        </a>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="/contato">Contato</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="indicacoes">
+        <div class="dropdown">
+            <button class="dropbtn">🎬 Filmes por Gênero</button>
+            <div class="dropdown-content">
+                <a href="/search?q=Terror">😱 Terror</a>
+                <a href="/search?q=Ação">💥 Ação</a>
+                <a href="/search?q=Comédia">😂 Comédia</a>
+                <a href="/search?q=Drama">🎭 Drama</a>
+                <a href="/search?q=Ficção">🚀 Sci-Fi</a>
+                <a href="/search?q=Romance">💖 Romance</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">📚 Livros por Tipo</button>
+            <div class="dropdown-content">
+                <a href="/search?q=Fantasia">🧙 Fantasia</a>
+                <a href="/search?q=Suspense">🕵️ Suspense</a>
+                <a href="/search?q=Biografias">📖 Biografias</a>
+                <a href="/search?q=Tecnologia">💻 Tecnologia</a>
+                <a href="/search?q=Poesia">✍️ Poesia</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero">
+        <form action="/search" method="GET" class="search-box">
+            <input type="text" name="q" placeholder="Pesquise filmes ou livros..." value="{{ busca | default('') }}" required class="search-input">
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
+    </section>
+
+    {% if not busca %}
+        <h2 class="section-title">🔥 Recomendações da Semana</h2>
+        <div class="grid-resultados">
+            {% for f in filmes %}
+                <div class="card">
+                    <img src="{{ f.imagem }}" alt="Poster" class="card-img">
+                    <div class="card-info">
+                        <h3>{{ f.nome_filme }}</h3>
+                        <a href="/criticas/{{ f.id_filme }}" class="btn-primary">Ver Críticas</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if busca %}
+        <h2 class="section-title">🔎 Resultados para "{{ busca }}"</h2>
+        <div class="grid-resultados">
+            {% for obra in lista_resultados %}
+                <div class="card search-card">
+                    <div class="card-badge {{ 'livro' if obra.tipo == 'livro' else '' }}">
+                        {{ obra.tipo.upper() }}
+                    </div>
+                    
+                    <img src="{{ obra.img }}" alt="Capa" class="card-img">
+                    
+                    <div class="card-info">
+                        <h3>{{ obra.titulo }}</h3>
+                        <p class="nota">
+                            {% if obra.tipo == 'filme' %}⭐ {{ obra.nota }}{% else %}📖 Obra Literária{% endif %}
+                        </p>
+                        
+                        <a href="/criticas/{{ obra.id }}" class="btn-secondary">💬 Ver Críticas</a>
+
+                        <details class="sinopse-container">
+                            <summary>📖 Sinopse</summary>
+                            <p>{{ obra.sinopse }}</p>
+                        </details>
+
+                        <form action="/postar_critica" method="POST" class="critica-form">
+                            <input type="hidden" name="obra_id" value="{{ obra.id }}">
+                            <input type="text" name="autor" placeholder="Seu nome" required class="input-round">
+                            <textarea name="comentario" placeholder="Sua crítica..." required class="textarea-round"></textarea>
+                            <button type="submit" class="btn-submit">Postar Crítica</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</main>
+
+<footer class="main-footer">
+    <p>Projeto Movecritic - By Gustavo Geraldo © 2026</p>
+</footer>
+
+</body>
+</html>
