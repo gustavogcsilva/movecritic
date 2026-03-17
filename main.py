@@ -5,7 +5,7 @@ from flask import Flask, request, render_template, redirect, url_for
 from dotenv import load_dotenv
 import ssl
 
-# Resolve problemas de certificado SSL em alguns ambientes
+# Resolve problemas de certificado SSL para chamadas de API
 ssl._create_default_https_context = ssl._create_unverified_context
 
 load_dotenv()
@@ -30,6 +30,7 @@ class BancoDeDados:
 
     def criar_tabelas(self):
         try:
+            # Tabela de Obras (Filmes e Livros)
             self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS filmes (
                     id_filme INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +42,7 @@ class BancoDeDados:
                     sinopse TEXT
                 )
             ''')
+            # Tabela de Críticas
             self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS criticas (
                     id_critica INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,7 +59,7 @@ class BancoDeDados:
 
     def salvar_obra(self, nome, categoria, genero, nota, imagem, sinopse):
         try:
-            # Verifica se já existe para evitar duplicidade
+            # Evita duplicados verificando nome e categoria
             self.cursor.execute("SELECT id_filme FROM filmes WHERE nome_filme = %s AND categoria = %s", (nome, categoria))
             res = self.cursor.fetchone()
             if res: return res['id_filme']
@@ -88,9 +90,7 @@ def home():
 def pesquisar():
     query = request.args.get('q', '')
     resultados_finais = []
-    
     api_key_tmdb = os.getenv("TMDB_API_KEY")
-    api_key_google = os.getenv("GOOGLE_BOOKS_API_KEY")
 
     if query:
         # 1. BUSCA FILMES NO TMDB
@@ -119,43 +119,42 @@ def pesquisar():
         except Exception as e: 
             print(f"❌ Erro API Filme: {e}")
 
-        # 2. BUSCA LIVROS NO GOOGLE BOOKS
+        # 2. BUSCA LIVROS (OPEN LIBRARY API)
         try:
-            url_l = "https://www.googleapis.com/books/v1/volumes"
-            params_l = {
-                "q": query, 
-                "maxResults": 10, 
-                "printType": "books"
-            }
-            if api_key_google:
-                params_l["GOOGLE_BOOKS_KEY"] = api_key_google
-
-            res_l = requests.get(url_l, params=params_l, timeout=5)
+            print(f"--- Iniciando busca na Open Library para: {query} ---")
+            url_ol = "https://openlibrary.org/search.json"
+            res_ol = requests.get(url_ol, params={"q": query, "limit": 10}, timeout=10)
             
-            if res_l.status_code == 200:
-                dados_l = res_l.json().get('items', [])
-                for item in dados_l:
-                    info = item.get('volumeInfo', {})
-                    titulo = info.get('title', 'Título Desconhecido')
+            if res_ol.status_code == 200:
+                dados_ol = res_ol.json().get('docs', [])
+                for item in dados_ol:
+                    titulo = item.get('title', 'Título Desconhecido')
                     
-                    img_links = info.get('imageLinks', {})
-                    thumb = img_links.get('thumbnail') or img_links.get('smallThumbnail') or "https://via.placeholder.com/150x220"
-                    img = thumb.replace("http://", "https://")
+                    # Tratamento de Capa
+                    cover_id = item.get('cover_i')
+                    img = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg" if cover_id else "https://via.placeholder.com/150x220?text=Sem+Capa"
                     
-                    sinopse = info.get('description') or 'Sem resumo disponível.'
-                    if len(sinopse) > 1000: sinopse = sinopse[:997] + "..."
+                    # Montagem da Sinopse/Resumo (Autores + Ano)
+                    autores = ", ".join(item.get('author_name', ['Autor desconhecido']))
+                    ano = item.get('first_publish_year', 'N/A')
+                    resumo = f"Escrito por: {autores}. Publicado originalmente em: {ano}."
                     
-                    id_db_livro = bd.salvar_obra(titulo, "livro", "Geral", "Livro", img, sinopse)
+                    id_db_livro = bd.salvar_obra(titulo, "livro", "Geral", "Livro", img, resumo)
                     if id_db_livro:
                         resultados_finais.append({
-                            "id": id_db_livro, "titulo": titulo, "nota": "Livro", "img": img, "sinopse": sinopse, "tipo": "livro"
+                            "id": id_db_livro, 
+                            "titulo": titulo, 
+                            "nota": "Livro", 
+                            "img": img, 
+                            "sinopse": resumo, 
+                            "tipo": "livro"
                         })
+                print(f"✅ Open Library retornou {len(dados_ol)} livros.")
             else:
-                print(f"❌ Erro Google Books Status: {res_l.status_code}")
-        except Exception as e: 
-            print(f"❌ Erro API Livro: {e}")
+                print(f"❌ Erro Open Library: {res_ol.status_code}")
+        except Exception as e:
+            print(f"❌ Erro Crítico Open Library: {e}")
 
-    print(f"🔍 Busca por '{query}': {len(resultados_finais)} itens encontrados.")
     return render_template('index.html', busca=query, lista_resultados=resultados_finais, filmes=[])
 
 @app.route('/criticas/<int:filme_id>')
