@@ -94,37 +94,44 @@ def pesquisar():
             dados_f = res_f.json().get('results', [])
             
             for item in dados_f:
-                titulo = item.get('title')
+                titulo = item.get('title', 'Título Desconhecido')
                 nota = str(round(item.get('vote_average', 0), 1))
-                img = f"https://image.tmdb.org/t/p/w500{item.get('poster_path')}" if item.get('poster_path') else "https://via.placeholder.com/150x220"
-                sinopse = item.get('overview', 'Sem sinopse.')
+                poster = item.get('poster_path')
+                img = f"https://image.tmdb.org/t/p/w500{poster}" if poster else "https://via.placeholder.com/150x220"
+                sinopse = item.get('overview') or 'Sem sinopse disponível.'
                 
                 id_db = bd.salvar_obra(titulo, "filme", "Geral", nota, img, sinopse)
                 resultados_finais.append({
                     "id": id_db, "titulo": titulo, "nota": nota, "img": img, "sinopse": sinopse, "tipo": "filme"
                 })
-        except Exception as e: print(f"Erro Filme: {e}")
+        except Exception as e: 
+            print(f"❌ Erro API Filme: {e}")
 
         # 2. BUSCA LIVROS NO GOOGLE BOOKS
         try:
             url_l = "https://www.googleapis.com/books/v1/volumes"
-            res_l = requests.get(url_l, params={"q": query, "maxResults": 10})
+            res_l = requests.get(url_l, params={"q": query, "maxResults": 10, "printType": "books"})
             dados_l = res_l.json().get('items', [])
             
             for item in dados_l:
                 info = item.get('volumeInfo', {})
-                titulo = info.get('title')
-                img = (info.get('imageLinks', {}).get('thumbnail') or "https://via.placeholder.com/150x220").replace("http://", "https://")
-                sinopse = info.get('description', 'Sem resumo disponível.')
+                titulo = info.get('title', 'Título Desconhecido')
                 
-                id_db = bd.salvar_obra(titulo, "livro", "Geral", "Livro", img, sinopse)
+                img_links = info.get('imageLinks', {})
+                thumb = img_links.get('thumbnail') or img_links.get('smallThumbnail') or "https://via.placeholder.com/150x220"
+                img = thumb.replace("http://", "https://")
+                
+                sinopse = info.get('description') or 'Sem resumo disponível.'
+                
+                id_db_livro = bd.salvar_obra(titulo, "livro", "Geral", "Livro", img, sinopse)
                 resultados_finais.append({
-                    "id": id_db, "titulo": titulo, "nota": "Livro", "img": img, "sinopse": sinopse, "tipo": "livro"
+                    "id": id_db_livro, "titulo": titulo, "nota": "Livro", "img": img, "sinopse": sinopse, "tipo": "livro"
                 })
-        except Exception as e: print(f"Erro Livro: {e}")
+        except Exception as e: 
+            print(f"❌ Erro API Livro: {e}")
 
-
-    resultados_finais.reverse()
+    print(f"🔍 Busca por '{query}': {len(resultados_finais)} itens encontrados.")
+    
     return render_template('index.html', busca=query, lista_resultados=resultados_finais, filmes=[])
 
 @app.route('/criticas/<int:filme_id>')
