@@ -11,19 +11,20 @@ app = Flask(__name__)
 class BancoDeDados:
     def __init__(self):
         try:
+            # Note o espaço (4 espaços ou 1 TAB) antes de cada linha abaixo
             self.conexao = mysql.connector.connect(
-                host="localhost",
-                port=3306,
-                user="root",
-                password="Guga@123",
-                database="projetinho"
+                host=os.getenv('DB_HOST'),
+                # Usamos int() porque a porta deve ser um número, não texto
+                port=int(os.getenv('DB_PORT', 24675)), 
+                user=os.getenv('DB_USER'),
+                password=os.getenv('DB_PASSWORD'),
+                database=os.getenv('DB_NAME', 'defaultdb')
             )
             self.cursor = self.conexao.cursor(dictionary=True, buffered=True)
             self.criar_tabelas()
-            print("Conectado ao MySQL com sucesso!")
+            print("Conectado ao MySQL do Aiven com sucesso!")
         except Exception as e:
             print(f"Erro ao conectar ao Banco: {e}")
-
     def criar_tabelas(self):
         try:
             self.cursor.execute('''
@@ -154,4 +155,4 @@ def sobre(): return render_template('sobre.html')
 def contato(): return render_template('contato.html')
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    banco = BancoDeDados()
