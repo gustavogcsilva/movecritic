@@ -1,0 +1,521 @@
+/* Variáveis para facilitar a troca de cores no futuro */
+:root {
+    --primary-red: #e50914;
+    --dark-bg: #121212;
+    --card-bg: #1f1f1f;
+    --input-bg: #2a2a2a;
+    --text-white: #ffffff;
+    --text-gray: #cccccc;
+}
+
+body.dark-theme {
+    background-color: var(--dark-bg);
+    color: var(--text-white);
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Header e Nav */
+.main-header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.logo {
+    color: var(--primary-red);
+    margin-bottom: 10px;
+}
+
+.nav-menu ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 20px;
+    padding: 0;
+}
+
+.nav-menu a {
+    color: var(--text-white);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+    color: var(--primary-red);
+}
+
+/* Dropdowns */
+.indicacoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #444;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dropbtn:hover {
+    background-color: var(--primary-red);
+    transform: scale(1.05);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--card-bg);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+    z-index: 10;
+    border-radius: 15px;
+    margin-top: 10px;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: var(--text-gray);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #333;
+    color: var(--primary-red);
+}
+
+/* Busca */
+.hero {
+    padding: 20px;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    padding: 12px 20px;
+    border-radius: 50px 0 0 50px;
+    border: none;
+    width: 350px;
+    outline: none;
+}
+
+.search-btn {
+    padding: 12px 25px;
+    border-radius: 0 50px 50px 0;
+    border: none;
+    background: var(--primary-red);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Grid e Cards */
+.section-title {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.grid-resultados {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    width: 220px;
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #333;
+    transition: 0.3s;
+}
+
+.search-card {
+    width: 260px;
+    position: relative;
+}
+
+.card-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.search-card .card-img {
+    height: 350px;
+}
+
+.card-info {
+    padding: 15px;
+}
+
+.card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--primary-red);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.card-badge.livro {
+    background-color: #007bff;
+}
+
+.nota {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* Botões e Forms */
+.btn-primary {
+    background: var(--primary-red);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.btn-secondary {
+    background: #333;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 50px;
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+}
+
+.critica-form {
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+.input-round {
+    width: 100%;
+    background: var(--input-bg);
+    color: white;
+    border-radius: 50px;
+    padding: 8px 15px;
+    border: 1px solid #444;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+.textarea-round {
+    width: 100%;
+    background: var(--input-bg);
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #444;
+    height: 70px;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.btn-submit {
+    width: 100%;
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Sinopse */
+.sinopse-container summary {
+    color: var(--primary-red);
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* Footer */
+.main-footer {
+    text-align: center;
+    padding: 40px;
+    background: var(--card-bg);
+    margin-top: 60px;
+    color: #888;
+}
+/* Seção de Contato */
+.contact-section {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 0.8s ease-in;
+}
+
+.section-subtitle {
+    color: #888;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* Card de Contato com Efeito de Destaque */
+.contact-card {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    background: #1f1f1f;
+    padding: 60px 40px;
+    border-radius: 30px;
+    border: 1px solid #333;
+    overflow: hidden; /* Para o efeito de brilho não vazar */
+    transition: transform 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    border-color: #e50914;
+}
+
+/* O "Glow" atrás do e-mail */
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.card-text {
+    position: relative;
+    z-index: 1;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+/* Link de E-mail Chamativo */
+.email-link {
+    position: relative;
+    z-index: 1;
+    display: block;
+    font-size: 1.4rem;
+    color: #e50914;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 15px;
+    border-bottom: 2px dashed #444;
+    transition: all 0.3s ease;
+}
+
+.email-link:hover {
+    color: #fff;
+    border-bottom-color: #e50914;
+    letter-spacing: 1px;
+}
+
+.developer-info {
+    position: relative;
+    z-index: 1;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.developer-info span {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.dev-name {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.back-link {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #e50914;
+}
+
+/* Animação simples de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Página Sobre */
+.about-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.about-header, .dedications-section {
+    margin-bottom: 50px;
+}
+
+.about-text {
+    line-height: 1.8;
+    color: var(--text-gray);
+    font-size: 1.1rem;
+}
+
+.about-grid {
+    margin-top: 40px;
+}
+
+.about-card {
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-10px);
+}
+
+.title-cinema {
+    color: var(--primary-red);
+    margin-bottom: 15px;
+}
+
+.title-literature {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.about-action {
+    margin-top: 50px;
+}
+
+/* Ajuste de animação para o conteúdo aparecer suavemente */
+.about-section {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Destaque para os nomes nas dedicatórias */
+.highlight-name {
+    color: #ffc107; /* Cor dourada para destaque */
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.4); /* Efeito de brilho suave */
+    font-size: 1.2rem;
+    display: inline-block;
+}
+
+/* Estilo para a nota de fins de estudo */
+.study-note {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666; /* Cinza discreto */
+    font-style: italic;
+    border-top: 1px solid #333;
+    display: inline-block;
+    padding-top: 10px;
+}
+
+/* Animação extra para os nomes brilharem levemente */
+.highlight-name:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px #ffc107;
+    transition: 0.3s;
+}
+/* Garante que o cabeçalho espalhe os itens */
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Empurra a logo para esquerda e nav para direita */
+    align-items: center;
+    padding: 10px 5%; /* Espaçamento interno */
+    background-color: #1a1a1a; /* Exemplo de cor de fundo */
+}
+
+/* Ajusta o tamanho da logo */
+.logo-img {
+    height: 50px; /* Ajuste a altura conforme desejar */
+    width: auto;  /* Mantém a proporção */
+    display: block;
+}
+
+/* Remove margens padrão que podem desalinhá-la */
+.logo-container {
+    margin: 0;
+}
+/* Configuração do Header para destacar a logo */
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Logo na esquerda, Menu na direita */
+    align-items: center;            /* Alinha verticalmente no centro */
+    padding: 15px 5%;               /* Aumenta o respiro interno do cabeçalho */
+    background-color: #121212;      /* Cor escura para o tema dark */
+    border-bottom: 2px solid #e50914; /* Opcional: uma linha colorida para destacar */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+}
+
+/* Ajuste de tamanho da Logo */
+.logo-img {
+    height: 70px;      /* Aumentamos de 50px para 70px para dar destaque */
+    width: auto;       /* Mantém a proporção da imagem */
+    transition: transform 0.3s ease; /* Efeito suave ao passar o mouse */
+    display: block;
+}
+
+.logo-img:hover {
+    transform: scale(1.05); /* A logo cresce levemente ao passar o mouse */
+}
+
+/* Garante que o menu continue alinhado à direita */
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;         /* Espaço entre os links */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}

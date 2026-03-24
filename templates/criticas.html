@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Críticas - {{ filme.nome_filme }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { 
+            background: #121212; 
+            color: white; 
+            font-family: 'Arial', sans-serif; 
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 20px;
+        }
+
+        /* Botão Voltar Arredondado */
+        .btn-voltar { 
+            display: inline-block;
+            background: #333;
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold; 
+            padding: 10px 25px;
+            border-radius: 50px; /* Botão Redondo */
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .btn-voltar:hover { 
+            background: #e50914; 
+            transform: scale(1.05);
+        }
+
+        /* Cabeçalho do Filme */
+        .header-filme { 
+            display: flex; 
+            gap: 30px; 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .header-filme img { 
+            width: 230px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-filme h1 { 
+            color: #e50914; 
+            margin-top: 0;
+            font-size: 2.5rem;
+        }
+
+        .meta-dado {
+            background: #222;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            border: 1px solid #444;
+        }
+
+        .sinopse {
+            line-height: 1.6;
+            color: #ccc;
+            margin-top: 20px;
+        }
+
+        /* Lista de Críticas */
+        .secao-criticas {
+            margin-top: 40px;
+        }
+
+        .critica-box { 
+            background: #1f1f1f; 
+            padding: 20px; 
+            margin-top: 20px; 
+            border-radius: 15px; /* Box Arredondado */
+            border-left: 6px solid #e50914; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .critica-box strong { 
+            color: #ffc107; 
+            font-size: 1.1rem;
+        }
+
+        .nota-badge {
+            float: right;
+            background: #e50914;
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .comentario {
+            font-style: italic;
+            margin-top: 15px;
+            color: #eee;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .header-filme { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/" class="btn-voltar">← Voltar para o início</a>
+        
+        <div class="header-filme">
+            <img src="{{ filme.imagem }}" alt="Poster de {{ filme.nome_filme }}">
+            <div class="info-filme">
+                <h1>{{ filme.nome_filme }}</h1>
+                <div>
+                    <span class="meta-dado">🎭 {{ filme.genero }}</span>
+                    <span class="meta-dado">⭐ {{ filme.imdb }}</span>
+                </div>
+                <div class="sinopse">
+                    <p><strong>Sinopse:</strong> {{ filme.sinopse }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="secao-criticas">
+            <h2>💬 Críticas da Comunidade</h2>
+            
+            {% if criticas %}
+                {% for c in criticas %}
+                    <div class="critica-box">
+                        <span class="nota-badge">Nota: {{ c.nota }}/10</span>
+                        <strong>👤 {{ c.autor }}</strong>
+                        <p class="comentario">"{{ c.comentario }}"</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #888; text-align: center; margin-top: 30px;">
+                    Ainda não há críticas para este filme. Seja o primeiro a comentar!
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
