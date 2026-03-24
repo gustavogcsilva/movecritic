@@ -97,7 +97,7 @@ class BancoDeDados:
             return None
         finally:
             if cur: cur.close()
-
+# Correcao de bug: criar tabelas ao iniciar o app
 
 bd = BancoDeDados()
 
