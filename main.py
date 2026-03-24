@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
-
+# Versao final corrigida - 24/03/2026
 # Carrega variáveis de ambiente do .env
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -21,10 +21,10 @@ class BancoDeDados:
     def conectar(self):
         try:
 
-            db_user = os.getenv("DB_USER", "avnadmin")
-            db_pass = os.getenv("DB_PASSWORD", "AVNS_qGcvW0E43G1KxfIJ4L_")
-            db_host = os.getenv("DB_HOST", "127.0.0.1")
-            db_name = os.getenv("DB_NAME", "defaultdb")
+            db_user = os.getenv("DB_USER")
+            db_pass = os.getenv("DB_PASSWORD")
+            db_host = os.getenv("DB_HOST")
+            db_name = os.getenv("DB_NAME")
             db_port = os.getenv("DB_PORT", "22091")
 
             self.conexao = mysql.connector.connect(
