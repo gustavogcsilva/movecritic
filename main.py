@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
-# Versao final corrigida - 24/03/2026
-# Carrega variáveis de ambiente do .env
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 #teste de alteração
@@ -102,7 +101,7 @@ class BancoDeDados:
 
 bd = BancoDeDados()
 
-
+#Rotas do flask
 
 @app.route("/")
 def home():
